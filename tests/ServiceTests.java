@@ -1,4 +1,5 @@
 import com.sun.net.httpserver.HttpServer;
+import server.Server;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,7 +13,7 @@ import java.util.Base64;
 public class ServiceTests {
     public static void main(String[] args) throws Exception {
         int port = findAvailablePort();
-        HttpServer server = Main.startServer(port);
+        HttpServer server = Server.startServer(port);
         try {
             testAccountCreation(port);
             String password = createAccount(port, "user@example.com");

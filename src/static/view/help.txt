@@ -1,0 +1,18 @@
+Vehicle Registration Service Help
+
+Configuration & Run
+1) Ensure Java 17+ is installed.
+2) Navigate to folder with VRS.JAR
+3) Run command: java -JAR VRS.JAR
+4) Service will be available at http://localhost:8089
+
+Endpoints
+POST /account
+  Body: {"accountId":"user@example.com"}
+POST /register
+  Header: Authorization: Basic base64(accountId:password)
+  Body: {"registrationCode":"555K487","validUntil":"2024-11-18"}
+GET /statistics
+  Header: Authorization: Basic base64(accountId:password)
+GET /registration/{registrationCode}
+GET /gui (simple web UI)
