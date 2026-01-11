@@ -7,7 +7,7 @@ Simple HTTP service for managing vehicle registrations and account statistics, b
 1. Ensure Java 17+ is installed.
 2. Compile:
    ```bash
-   javac src/Main.java src/server/*.java src/controller/*.java src/service/*.java src/repository/*.java src/model/*.java src/util/*.java
+   javac src/Main.java src/server/*.java src/controller/*.java src/service/iface/*.java src/service/impl/*.java src/repository/Database.java src/repository/iface/*.java src/repository/impl/*.java src/model/*.java src/util/*.java
    ```
 3. Run:
    ```bash
@@ -60,6 +60,6 @@ Authorization: Basic base64(accountId:password)
 Compile the service and test runner, then execute the tests:
 
 ```bash
-javac src/Main.java src/server/*.java src/controller/*.java src/service/*.java src/repository/*.java src/model/*.java src/util/*.java tests/ServiceTests.java
+javac src/Main.java src/server/*.java src/controller/*.java src/service/iface/*.java src/service/impl/*.java src/repository/Database.java src/repository/iface/*.java src/repository/impl/*.java src/model/*.java src/util/*.java tests/ServiceTests.java
 java -cp src:tests ServiceTests
 ```

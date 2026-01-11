@@ -2,30 +2,26 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import service.RegistrationService;
+import service.iface.IRegistrationService;
 import util.HttpUtils;
 import util.JsonUtils;
 
 import java.io.IOException;
 import java.net.URI;
 
-import static util.HttpUtils.isGetRequest;
-import static util.HttpUtils.sendJsonMethodNotAllowed;
-
 public class RegistrationController implements HttpHandler {
-    private final RegistrationService registrationService;
+    private final IRegistrationService registrationService;
 
-    public RegistrationController(RegistrationService registrationService) {
+    public RegistrationController(IRegistrationService registrationService) {
         this.registrationService = registrationService;
     }
 
     @Override
-    public void handle(HttpExchange exchange) {
-        if (! isGetRequest(exchange)) {
-            sendJsonMethodNotAllowed(exchange);
+    public void handle(HttpExchange exchange) throws IOException {
+        if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+            HttpUtils.sendJson(exchange, 405, JsonUtils.error("Method not allowed"));
             return;
         }
-
         URI uri = exchange.getRequestURI();
         String[] parts = uri.getPath().split("/");
         if (parts.length < 3 || parts[2].isBlank()) {

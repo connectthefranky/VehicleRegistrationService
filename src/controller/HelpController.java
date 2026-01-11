@@ -7,17 +7,13 @@ import util.PageLoader;
 
 import java.io.IOException;
 
-import static util.HttpUtils.isGetRequest;
-import static util.HttpUtils.sendTextMethodNotAllowed;
-
 public class HelpController implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if (! isGetRequest(exchange)) {
-            sendTextMethodNotAllowed(exchange);
+        if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+            HttpUtils.sendText(exchange, 405, "Method not allowed");
             return;
         }
-
         String content = PageLoader.loadText("help.txt");
         HttpUtils.sendText(exchange, 200, content);
     }

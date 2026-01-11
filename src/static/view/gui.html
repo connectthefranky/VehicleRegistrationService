@@ -4,7 +4,6 @@
   <meta charset="utf-8"/>
   <title>Vehicle Registration Service</title>
 </head>
-
 <body>
 <h1>Vehicle Registration Service</h1>
 <section>
@@ -36,7 +35,6 @@
   <pre id="statsResult"></pre>
 </section>
 <script>
-
 async function createAccount() {
   const accountId = document.getElementById('accountId').value;
   const response = await fetch('/account', {
@@ -46,7 +44,6 @@ async function createAccount() {
   });
   document.getElementById('accountResult').textContent = await response.text();
 }
-
 async function registerVehicle() {
   const accountId = document.getElementById('regAccountId').value;
   const password = document.getElementById('regPassword').value;
@@ -62,13 +59,11 @@ async function registerVehicle() {
   });
   document.getElementById('registerResult').textContent = await response.text();
 }
-
 async function checkRegistration() {
   const registrationCode = document.getElementById('checkCode').value;
   const response = await fetch('/registration/' + registrationCode);
   document.getElementById('checkResult').textContent = await response.text();
 }
-
 async function loadStatistics() {
   const accountId = document.getElementById('statsAccountId').value;
   const password = document.getElementById('statsPassword').value;
