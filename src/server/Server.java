@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class Server {
-    private static final int DEFAULT_PORT = 8081;
+    private static final int DEFAULT_PORT = 8089;
 
     public static void startServer(String[] args) throws IOException {
         int port = DEFAULT_PORT;

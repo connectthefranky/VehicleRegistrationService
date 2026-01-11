@@ -2,9 +2,9 @@ Vehicle Registration Service Help
 
 Configuration & Run
 1) Ensure Java 17+ is installed.
-2. Navigate to folder containing VRS.jar
-3. Run: java -jar VRS.jar
-4) Service will be available at http://localhost:8080
+2) Compile: javac src/Main.java src/server/*.java src/controller/*.java src/service/*.java src/service/impl/*.java src/repository/Database.java src/repository/*.java src/repository/impl/*.java src/model/*.java src/util/*.java
+3) Run: java -cp src Main
+4) Service will be available at http://localhost:8089
 
 Endpoints
 POST /account

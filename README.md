@@ -5,12 +5,15 @@ Simple HTTP service for managing vehicle registrations and account statistics, b
 ## Configuration & Run
 
 1. Ensure Java 17+ is installed.
-2. Navigate to folder containing VRS.jar
+2. Compile:
+   ```bash
+   javac src/Main.java src/server/*.java src/controller/*.java src/service/*.java src/service/impl/*.java src/repository/Database.java src/repository/*.java src/repository/impl/*.java src/model/*.java src/util/*.java
+   ```
 3. Run:
    ```bash
-   java -jar VRS.jar
+   java -cp src Main
    ```
-4. Service is available at: `http://localhost:8080`
+4. Service is available at: `http://localhost:8089`
 
 ## Endpoints
 
