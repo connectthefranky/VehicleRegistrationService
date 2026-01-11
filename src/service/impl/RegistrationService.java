@@ -1,23 +1,25 @@
-package service;
+package service.impl;
 
 import model.Registration;
 import model.ServiceResponse;
-import repository.RegistrationRepository;
-import repository.StatisticsRepository;
+import repository.IRegistrationRepository;
+import repository.IStatisticsRepository;
+import service.IRegistrationService;
 import util.JsonUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-public class RegistrationService {
-    private final RegistrationRepository registrationRepository;
-    private final StatisticsRepository statisticsRepository;
+public class RegistrationService implements IRegistrationService {
+    private final IRegistrationRepository registrationRepository;
+    private final IStatisticsRepository statisticsRepository;
 
-    public RegistrationService(RegistrationRepository registrationRepository, StatisticsRepository statisticsRepository) {
+    public RegistrationService(IRegistrationRepository registrationRepository, IStatisticsRepository statisticsRepository) {
         this.registrationRepository = registrationRepository;
         this.statisticsRepository = statisticsRepository;
     }
 
+    @Override
     public ServiceResponse registerVehicle(String accountId, String registrationCode, String validUntil) {
         if (registrationCode == null || registrationCode.isBlank() || validUntil == null || validUntil.isBlank()) {
             return new ServiceResponse(400, JsonUtils.error("registrationCode and validUntil are required"));
@@ -37,6 +39,7 @@ public class RegistrationService {
         return new ServiceResponse(201, JsonUtils.successWithMessage("Vehicle registered successfully."));
     }
 
+    @Override
     public ServiceResponse checkRegistration(String registrationCode) {
         Registration entry = registrationRepository.findByCode(registrationCode);
         if (entry == null) {

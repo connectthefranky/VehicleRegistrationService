@@ -7,28 +7,35 @@ import controller.HelpController;
 import controller.RegistrationController;
 import controller.RegisterController;
 import controller.StatisticsController;
-import repository.AccountRepository;
-import repository.Database;
-import repository.RegistrationRepository;
-import repository.StatisticsRepository;
-import service.AccountService;
-import service.AuthService;
-import service.RegistrationService;
-import service.StatisticsService;
+import database.Database;
+import repository.impl.AccountRepository;
+import repository.impl.RegistrationRepository;
+import repository.impl.StatisticsRepository;
+import service.impl.AccountService;
+import service.impl.AuthService;
+import service.impl.RegistrationService;
+import service.impl.StatisticsService;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class Server {
-    private static final int DEFAULT_PORT = 8089;
+    private static final int DEFAULT_PORT = 8081;
 
     public static void startServer(String[] args) throws IOException {
-        startServer(DEFAULT_PORT);
+        int port = DEFAULT_PORT;
+        if (args.length > 0) {
+            try {
+                port = Integer.parseInt(args[0]);
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid port provided, defaulting to " + DEFAULT_PORT);
+            }
+        }
+        startServer(port);
     }
 
     public static HttpServer startServer(int port) throws IOException {
         Database database = new Database();
-
         AccountRepository accountRepository = new AccountRepository(database);
         RegistrationRepository registrationRepository = new RegistrationRepository(database);
         StatisticsRepository statisticsRepository = new StatisticsRepository(database);
@@ -46,10 +53,8 @@ public class Server {
         server.createContext("/help", new HelpController());
         server.createContext("/gui", new GuiController());
         server.setExecutor(null);
-
         server.start();
         System.out.println("Vehicle Registration Service started on port " + server.getAddress().getPort());
-
         return server;
     }
 }

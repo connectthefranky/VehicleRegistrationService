@@ -2,35 +2,34 @@ package controller;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import service.AuthService;
-import service.RegistrationService;
+import service.IAuthService;
+import service.IRegistrationService;
 import util.HttpUtils;
 import util.JsonUtils;
 
 import java.io.IOException;
 import java.util.Map;
 
-import static util.HttpUtils.*;
+import static util.HttpUtils.isPostRequest;
 
 public class RegisterController implements HttpHandler {
-    private final AuthService authService;
-    private final RegistrationService registrationService;
+    private final IAuthService authService;
+    private final IRegistrationService registrationService;
 
-    public RegisterController(AuthService authService, RegistrationService registrationService) {
+    public RegisterController(IAuthService authService, IRegistrationService registrationService) {
         this.authService = authService;
         this.registrationService = registrationService;
     }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if (! isPostRequest(exchange)) {
-            sendJsonMethodNotAllowed(exchange);
+        if (!isPostRequest(exchange)) {
+            HttpUtils.sendJson(exchange, 405, JsonUtils.error("Method not allowed"));
             return;
         }
-
         String accountId = authService.authenticate(exchange.getRequestHeaders());
         if (accountId == null) {
-            sendJsonUnauthorized(exchange);
+            HttpUtils.sendJson(exchange, 401, JsonUtils.error("Unauthorized"));
             return;
         }
         String body = HttpUtils.readBody(exchange.getRequestBody());

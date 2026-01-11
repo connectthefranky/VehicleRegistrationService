@@ -1,18 +1,20 @@
-package service;
+package service.impl;
 
 import com.sun.net.httpserver.Headers;
-import repository.AccountRepository;
+import repository.IAccountRepository;
+import service.IAuthService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-public class AuthService {
-    private final AccountRepository accountRepository;
+public class AuthService implements IAuthService {
+    private final IAccountRepository accountRepository;
 
-    public AuthService(AccountRepository accountRepository) {
+    public AuthService(IAccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 
+    @Override
     public String authenticate(Headers headers) {
         String authHeader = headers.getFirst("Authorization");
         if (authHeader == null || !authHeader.startsWith("Basic ")) {

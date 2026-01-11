@@ -1,25 +1,27 @@
-package service;
+package service.impl;
 
 import model.Account;
 import model.ServiceResponse;
-import repository.AccountRepository;
-import repository.StatisticsRepository;
+import repository.IAccountRepository;
+import repository.IStatisticsRepository;
+import service.IAccountService;
 import util.JsonUtils;
 
 import java.util.Random;
 
-public class AccountService {
+public class AccountService implements IAccountService {
     private static final int PASSWORD_LENGTH = 8;
     private static final String PASSWORD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private final AccountRepository accountRepository;
-    private final StatisticsRepository statisticsRepository;
+    private final IAccountRepository accountRepository;
+    private final IStatisticsRepository statisticsRepository;
     private final Random random = new Random();
 
-    public AccountService(AccountRepository accountRepository, StatisticsRepository statisticsRepository) {
+    public AccountService(IAccountRepository accountRepository, IStatisticsRepository statisticsRepository) {
         this.accountRepository = accountRepository;
         this.statisticsRepository = statisticsRepository;
     }
 
+    @Override
     public ServiceResponse createAccount(String accountId) {
         if (accountId == null || accountId.isBlank()) {
             return new ServiceResponse(400, JsonUtils.error("accountId is required"));

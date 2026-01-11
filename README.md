@@ -5,13 +5,10 @@ Simple HTTP service for managing vehicle registrations and account statistics, b
 ## Configuration & Run
 
 1. Ensure Java 17+ is installed.
-2. Compile:
-   ```bash
-   javac src/Main.java src/server/*.java src/controller/*.java src/service/*.java src/repository/*.java src/model/*.java src/util/*.java
-   ```
+2. Navigate to folder containing VRS.jar
 3. Run:
    ```bash
-   java -cp src Main
+   java -jar VRS.jar
    ```
 4. Service is available at: `http://localhost:8080`
 
@@ -54,12 +51,3 @@ Authorization: Basic base64(accountId:password)
 
 ### Simple GUI
 `GET /gui`
-
-## Tests
-
-Compile the service and test runner, then execute the tests:
-
-```bash
-javac src/Main.java src/server/*.java src/controller/*.java src/service/*.java src/repository/*.java src/model/*.java src/util/*.java tests/ServiceTests.java
-java -cp src:tests ServiceTests
-```

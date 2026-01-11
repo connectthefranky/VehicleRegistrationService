@@ -1,22 +1,28 @@
-package repository;
+package repository.impl;
+
+import database.Database;
+import repository.IStatisticsRepository;
 
 import java.util.Map;
 
-public class StatisticsRepository {
+public class StatisticsRepository implements IStatisticsRepository {
     private final Database database;
 
     public StatisticsRepository(Database database) {
         this.database = database;
     }
 
+    @Override
     public void initializeAccount(String accountId) {
         database.initStatistics(accountId);
     }
 
+    @Override
     public void increment(String accountId) {
         database.incrementStatistics(accountId);
     }
 
+    @Override
     public Map<String, Integer> getAll() {
         return database.getStatistics();
     }
