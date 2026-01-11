@@ -5,7 +5,7 @@ import model.Registration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Database implements IDatabase {
+public class Database {
     private final Map<String, String> accounts = new ConcurrentHashMap<>();
     private final Map<String, Registration> registrations = new ConcurrentHashMap<>();
     private final Map<String, Integer> statistics = new ConcurrentHashMap<>();
