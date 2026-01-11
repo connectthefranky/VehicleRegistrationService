@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Vehicle Registration Service</title>
+</head>
+<body>
+<h1>Vehicle Registration Service</h1>
+<section>
+  <h2>Create Account</h2>
+  <input id="accountId" placeholder="accountId"/>
+  <button onclick="createAccount()">Create</button>
+  <pre id="accountResult"></pre>
+</section>
+<section>
+  <h2>Register Vehicle</h2>
+  <input id="regAccountId" placeholder="accountId"/>
+  <input id="regPassword" placeholder="password"/>
+  <input id="registrationCode" placeholder="registrationCode"/>
+  <input id="validUntil" placeholder="YYYY-MM-DD"/>
+  <button onclick="registerVehicle()">Register</button>
+  <pre id="registerResult"></pre>
+</section>
+<section>
+  <h2>Check Registration</h2>
+  <input id="checkCode" placeholder="registrationCode"/>
+  <button onclick="checkRegistration()">Check</button>
+  <pre id="checkResult"></pre>
+</section>
+<section>
+  <h2>Statistics</h2>
+  <input id="statsAccountId" placeholder="accountId"/>
+  <input id="statsPassword" placeholder="password"/>
+  <button onclick="loadStatistics()">Load</button>
+  <pre id="statsResult"></pre>
+</section>
+<script>
+async function createAccount() {
+  const accountId = document.getElementById('accountId').value;
+  const response = await fetch('/account', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({accountId})
+  });
+  document.getElementById('accountResult').textContent = await response.text();
+}
+async function registerVehicle() {
+  const accountId = document.getElementById('regAccountId').value;
+  const password = document.getElementById('regPassword').value;
+  const registrationCode = document.getElementById('registrationCode').value;
+  const validUntil = document.getElementById('validUntil').value;
+  const response = await fetch('/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ' + btoa(accountId + ':' + password)
+    },
+    body: JSON.stringify({registrationCode, validUntil})
+  });
+  document.getElementById('registerResult').textContent = await response.text();
+}
+async function checkRegistration() {
+  const registrationCode = document.getElementById('checkCode').value;
+  const response = await fetch('/registration/' + registrationCode);
+  document.getElementById('checkResult').textContent = await response.text();
+}
+async function loadStatistics() {
+  const accountId = document.getElementById('statsAccountId').value;
+  const password = document.getElementById('statsPassword').value;
+  const response = await fetch('/statistics', {
+    headers: {
+      'Authorization': 'Basic ' + btoa(accountId + ':' + password)
+    }
+  });
+  document.getElementById('statsResult').textContent = await response.text();
+}
+</script>
+</body>
+</html>
