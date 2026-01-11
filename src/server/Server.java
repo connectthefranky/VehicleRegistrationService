@@ -1,0 +1,61 @@
+package server;
+
+import com.sun.net.httpserver.HttpServer;
+import controller.AccountController;
+import controller.GuiController;
+import controller.HelpController;
+import controller.RegistrationController;
+import controller.RegisterController;
+import controller.StatisticsController;
+import repository.Database;
+import repository.impl.AccountRepository;
+import repository.impl.RegistrationRepository;
+import repository.impl.StatisticsRepository;
+import service.impl.AccountService;
+import service.impl.AuthService;
+import service.impl.RegistrationService;
+import service.impl.StatisticsService;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+
+public class Server {
+    private static final int DEFAULT_PORT = 8080;
+
+    public static HttpServer startServer(String[] args) throws IOException {
+        int port = DEFAULT_PORT;
+        if (args.length > 0) {
+            try {
+                port = Integer.parseInt(args[0]);
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid port provided, defaulting to " + DEFAULT_PORT);
+                port = DEFAULT_PORT;
+            }
+        }
+        return startServer(port);
+    }
+
+    public static HttpServer startServer(int port) throws IOException {
+        Database database = new Database();
+        AccountRepository accountRepository = new AccountRepository(database);
+        RegistrationRepository registrationRepository = new RegistrationRepository(database);
+        StatisticsRepository statisticsRepository = new StatisticsRepository(database);
+
+        AccountService accountService = new AccountService(accountRepository, statisticsRepository);
+        AuthService authService = new AuthService(accountRepository);
+        RegistrationService registrationService = new RegistrationService(registrationRepository, statisticsRepository);
+        StatisticsService statisticsService = new StatisticsService(statisticsRepository);
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+        server.createContext("/account", new AccountController(accountService));
+        server.createContext("/register", new RegisterController(authService, registrationService));
+        server.createContext("/statistics", new StatisticsController(authService, statisticsService));
+        server.createContext("/registration", new RegistrationController(registrationService));
+        server.createContext("/help", new HelpController());
+        server.createContext("/gui", new GuiController());
+        server.setExecutor(null);
+        server.start();
+        System.out.println("Vehicle Registration Service started on port " + server.getAddress().getPort());
+        return server;
+    }
+}
